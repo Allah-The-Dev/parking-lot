@@ -117,4 +117,17 @@ public class ParkingLotTest {
         Mockito.verify(ownerMock, Mockito.times(1)).nofifyFull();
     }
 
+    @Test
+    void shouldNotifyOwnerForAvailableParkingLot()
+            throws ParkingLotFullException, CarAlreadyParkedException, CarNotParkedException {
+        Owner ownerMock = Mockito.mock(Owner.class);
+        ParkingLot parkingLot = new ParkingLot(2, ownerMock);
+        Car car2 = new Car();
+        parkingLot.park(new Car());
+        parkingLot.park(car2);
+        parkingLot.unpark(car2);
+
+        Mockito.verify(ownerMock, Mockito.times(1)).notifyAvailable();
+    }
+
 }

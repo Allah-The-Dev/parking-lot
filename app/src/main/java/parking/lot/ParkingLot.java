@@ -8,8 +8,6 @@ public class ParkingLot {
     Owner owner;
     Set<Car> parkedCars = new HashSet<>();
 
- 
-
     public ParkingLot(int capacity, Owner ownerMock) {
         this.capacity = capacity;
         this.owner = ownerMock;
@@ -36,6 +34,9 @@ public class ParkingLot {
         }
 
         parkedCars.remove(car);
+        if (capacity - parkedCars.size() == 1) {
+            this.owner.notifyAvailable();
+        }
 
     }
 

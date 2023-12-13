@@ -5,4 +5,7 @@ public class Owner {
     public void nofifyFull() {
     }
 
+    public void notifyAvailable() {
+    }
+
 }
