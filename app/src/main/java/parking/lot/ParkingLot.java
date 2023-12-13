@@ -27,7 +27,7 @@ public class ParkingLot {
         }
 
         parkedCars.add(car);
-        if (capacity - parkedCars.size() == 0) {
+        if (capacity == parkedCars.size()) {
             this.observers.forEach(observer -> observer.nofifyFull());
         }
 
