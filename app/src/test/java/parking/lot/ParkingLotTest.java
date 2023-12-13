@@ -1,6 +1,8 @@
 package parking.lot;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -59,6 +61,38 @@ public class ParkingLotTest {
         parkingLot.park(car);
         parkingLot.unpark(car);
         assertThrows(CarNotParkedException.class, () -> parkingLot.unpark(car2));
+
+    }
+
+    @Test
+    void shouldReturnTrueWhenCarIsAvailableToBeUnparked()
+            throws ParkingLotFullException, CarAlreadyParkedException, CarNotParkedException {
+        ParkingLot parkingLot = new ParkingLot(1);
+
+        Car car = new Car();
+        parkingLot.park(car);
+
+        assertTrue(parkingLot.isParked(car));
+
+    }
+
+    @Test
+    void shouldReturnFalseWhenCarIsNotAvailableToBeUnparked()
+            throws ParkingLotFullException, CarAlreadyParkedException, CarNotParkedException {
+        ParkingLot parkingLot = new ParkingLot(1);
+
+        Car car = new Car();
+        parkingLot.park(car);
+
+        assertFalse(parkingLot.isParked(new Car()));
+    }
+
+    @Test
+    void shouldReturnCarNotParkedExceptionWhenCapacityIs0()
+            throws ParkingLotFullException, CarAlreadyParkedException, CarNotParkedException {
+        ParkingLot parkingLot = new ParkingLot(0);
+
+        assertThrows(CarNotParkedException.class, () -> parkingLot.unpark(new Car()));
 
     }
 

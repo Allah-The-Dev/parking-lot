@@ -32,4 +32,11 @@ public class ParkingLot {
 
     }
 
+    public boolean isParked(Car car) {
+        if (parkedCars.contains(car)) {
+            return true;
+        }
+        return false;
+    }
+
 }
