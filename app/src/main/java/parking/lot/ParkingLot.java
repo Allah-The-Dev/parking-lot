@@ -5,10 +5,14 @@ import java.util.Set;
 
 public class ParkingLot {
     final int capacity;
+    Owner owner;
     Set<Car> parkedCars = new HashSet<>();
 
-    public ParkingLot(int capacity) {
+ 
+
+    public ParkingLot(int capacity, Owner ownerMock) {
         this.capacity = capacity;
+        this.owner = ownerMock;
     }
 
     public void park(Car car) throws ParkingLotFullException, CarAlreadyParkedException {
@@ -20,6 +24,9 @@ public class ParkingLot {
         }
 
         parkedCars.add(car);
+        if (capacity - parkedCars.size() == 0) {
+            this.owner.nofifyFull();
+        }
 
     }
 

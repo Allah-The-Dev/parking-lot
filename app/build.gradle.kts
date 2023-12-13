@@ -22,6 +22,9 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:31.1-jre")
+
+    // Library to mock
+    testImplementation("org.mockito:mockito-core:5.7.0")
 }
 
 application {
