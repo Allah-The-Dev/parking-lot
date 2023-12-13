@@ -35,4 +35,22 @@ public class AttendantTest {
 
     }
 
+    @Test
+    void attendantShouldBeAbleToParkCarInFirstAvailableParkingLotInMultipleParkingLots()
+            throws ParkingLotFullException, CarAlreadyParkedException {
+        ParkingLot parkingLotMock = Mockito.mock(ParkingLot.class);
+        ParkingLot parkingLotMock2 = Mockito.mock(ParkingLot.class);
+
+        Attendant attendant = new Attendant();
+        attendant.addParkingLot(parkingLotMock);
+        attendant.addParkingLot(parkingLotMock2);
+
+        Car carMock = Mockito.mock(Car.class);
+
+        Mockito.when(parkingLotMock.isFull()).thenReturn(true);
+        Mockito.when(parkingLotMock2.isFull()).thenReturn(false);
+
+        attendant.park(carMock);
+
+    }
 }

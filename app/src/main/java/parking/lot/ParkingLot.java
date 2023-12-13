@@ -33,6 +33,10 @@ public class ParkingLot {
 
     }
 
+    boolean isFull() {
+        return this.capacity > this.parkedCars.size();
+    }
+
     public void unpark(Car car) throws CarNotParkedException {
         if (!isParked(car)) {
             throw new CarNotParkedException();

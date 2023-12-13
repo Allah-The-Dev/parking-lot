@@ -15,6 +15,10 @@ public class Attendant {
     }
 
     void park(Car car) throws ParkingLotFullException, CarAlreadyParkedException {
-        this.parkingLots.get(0).park(car);
+        for (ParkingLot parkingLot : parkingLots) {
+            if (!parkingLot.isFull()) {
+                parkingLot.park(car);
+            }
+        }
     }
 }
