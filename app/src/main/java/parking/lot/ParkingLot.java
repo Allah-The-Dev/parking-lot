@@ -12,7 +12,7 @@ public class ParkingLot {
     }
 
     public void park(Car car) throws ParkingLotFullException, CarAlreadyParkedException {
-        if (parkedCars.contains(car)) {
+        if (isParked(car)) {
             throw new CarAlreadyParkedException();
         }
         if (capacity - parkedCars.size() <= 0) {
@@ -24,7 +24,7 @@ public class ParkingLot {
     }
 
     public void unpark(Car car) throws CarNotParkedException {
-        if (!parkedCars.contains(car)) {
+        if (!isParked(car)) {
             throw new CarNotParkedException();
         }
 
