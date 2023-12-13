@@ -39,4 +39,27 @@ public class ParkingLotTest {
 
     }
 
+    @Test
+    void shouldBeAbleToUnpark()
+            throws ParkingLotFullException, CarAlreadyParkedException, CarNotParkedException {
+        ParkingLot parkingLot = new ParkingLot(1);
+
+        Car car = new Car();
+        parkingLot.park(car);
+        parkingLot.unpark(car);
+    }
+
+    @Test
+    void shouldThrowCarNotParkedExceptionForNotParkedCar()
+            throws ParkingLotFullException, CarAlreadyParkedException, CarNotParkedException {
+        ParkingLot parkingLot = new ParkingLot(1);
+
+        Car car = new Car();
+        Car car2 = new Car();
+        parkingLot.park(car);
+        parkingLot.unpark(car);
+        assertThrows(CarNotParkedException.class, () -> parkingLot.unpark(car2));
+
+    }
+
 }

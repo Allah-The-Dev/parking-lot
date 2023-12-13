@@ -22,4 +22,13 @@ public class ParkingLot {
         capacity--;
     }
 
+    public void unpark(Car car) throws CarNotParkedException {
+        if (!parkedCars.contains(car)) {
+            throw new CarNotParkedException();
+        }
+        capacity++;
+        parkedCars.remove(car);
+
+    }
+
 }
