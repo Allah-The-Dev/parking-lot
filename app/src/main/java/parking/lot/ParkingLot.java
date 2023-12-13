@@ -1,16 +1,21 @@
 package parking.lot;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ParkingLot {
     final int capacity;
-    Owner owner;
+    List<Observer> observers = new ArrayList<>();
     Set<Car> parkedCars = new HashSet<>();
 
-    public ParkingLot(int capacity, Owner ownerMock) {
+    public ParkingLot(int capacity) {
         this.capacity = capacity;
-        this.owner = ownerMock;
+    }
+
+    void registerObserver(Observer observer) {
+        this.observers.add(observer);
     }
 
     public void park(Car car) throws ParkingLotFullException, CarAlreadyParkedException {
@@ -23,7 +28,7 @@ public class ParkingLot {
 
         parkedCars.add(car);
         if (capacity - parkedCars.size() == 0) {
-            this.owner.nofifyFull();
+            this.observers.forEach(observer -> observer.nofifyFull());
         }
 
     }
@@ -35,7 +40,7 @@ public class ParkingLot {
 
         parkedCars.remove(car);
         if (capacity - parkedCars.size() == 1) {
-            this.owner.notifyAvailable();
+            this.observers.forEach(observer -> observer.notifyAvailable());
         }
 
     }

@@ -11,8 +11,7 @@ import org.mockito.Mockito;
 public class ParkingLotTest {
     @Test
     void shouldBeAbleToParkCar() throws ParkingLotFullException, CarAlreadyParkedException {
-        Owner ownerMock = Mockito.mock(Owner.class);
-        ParkingLot parkingLot = new ParkingLot(1000, ownerMock);
+        ParkingLot parkingLot = new ParkingLot(1000);
 
         parkingLot.park(new Car());
     }
@@ -20,8 +19,7 @@ public class ParkingLotTest {
     @Test
     void shouldThrowParkingNotAvailableExceptionForNoCapacity()
             throws ParkingLotFullException, CarAlreadyParkedException {
-        Owner ownerMock = Mockito.mock(Owner.class);
-        ParkingLot parkingLot = new ParkingLot(3, ownerMock);
+        ParkingLot parkingLot = new ParkingLot(3);
 
         parkingLot.park(new Car());
         parkingLot.park(new Car());
@@ -33,8 +31,7 @@ public class ParkingLotTest {
     @Test
     void shouldThrowCarAlreadyParkedExceptionForParkingSameCarAgain()
             throws ParkingLotFullException, CarAlreadyParkedException {
-        Owner ownerMock = Mockito.mock(Owner.class);
-        ParkingLot parkingLot = new ParkingLot(4, ownerMock);
+        ParkingLot parkingLot = new ParkingLot(4);
 
         parkingLot.park(new Car());
         parkingLot.park(new Car());
@@ -49,8 +46,7 @@ public class ParkingLotTest {
     @Test
     void shouldBeAbleToUnpark()
             throws ParkingLotFullException, CarAlreadyParkedException, CarNotParkedException {
-        Owner ownerMock = Mockito.mock(Owner.class);
-        ParkingLot parkingLot = new ParkingLot(1, ownerMock);
+        ParkingLot parkingLot = new ParkingLot(1);
 
         Car car = new Car();
         parkingLot.park(car);
@@ -60,8 +56,7 @@ public class ParkingLotTest {
     @Test
     void shouldThrowCarNotParkedExceptionForNotParkedCar()
             throws ParkingLotFullException, CarAlreadyParkedException, CarNotParkedException {
-        Owner ownerMock = Mockito.mock(Owner.class);
-        ParkingLot parkingLot = new ParkingLot(1, ownerMock);
+        ParkingLot parkingLot = new ParkingLot(1);
 
         Car car = new Car();
         Car car2 = new Car();
@@ -74,8 +69,7 @@ public class ParkingLotTest {
     @Test
     void shouldReturnTrueWhenCarIsAvailableToBeUnparked()
             throws ParkingLotFullException, CarAlreadyParkedException, CarNotParkedException {
-        Owner ownerMock = Mockito.mock(Owner.class);
-        ParkingLot parkingLot = new ParkingLot(1, ownerMock);
+        ParkingLot parkingLot = new ParkingLot(1);
 
         Car car = new Car();
         parkingLot.park(car);
@@ -87,8 +81,7 @@ public class ParkingLotTest {
     @Test
     void shouldReturnFalseWhenCarIsNotAvailableToBeUnparked()
             throws ParkingLotFullException, CarAlreadyParkedException, CarNotParkedException {
-        Owner ownerMock = Mockito.mock(Owner.class);
-        ParkingLot parkingLot = new ParkingLot(1, ownerMock);
+        ParkingLot parkingLot = new ParkingLot(1);
 
         Car car = new Car();
         parkingLot.park(car);
@@ -99,8 +92,7 @@ public class ParkingLotTest {
     @Test
     void shouldReturnCarNotParkedExceptionWhenCapacityIs0()
             throws ParkingLotFullException, CarAlreadyParkedException, CarNotParkedException {
-        Owner ownerMock = Mockito.mock(Owner.class);
-        ParkingLot parkingLot = new ParkingLot(0, ownerMock);
+        ParkingLot parkingLot = new ParkingLot(0);
 
         assertThrows(CarNotParkedException.class, () -> parkingLot.unpark(new Car()));
 
@@ -108,8 +100,10 @@ public class ParkingLotTest {
 
     @Test
     void shouldNotifyOwnerForFullParkingLot() throws ParkingLotFullException, CarAlreadyParkedException {
-        Owner ownerMock = Mockito.mock(Owner.class);
-        ParkingLot parkingLot = new ParkingLot(2, ownerMock);
+        Observer ownerMock = Mockito.mock(Observer.class);
+
+        ParkingLot parkingLot = new ParkingLot(2);
+        parkingLot.registerObserver(ownerMock);
 
         parkingLot.park(new Car());
         parkingLot.park(new Car());
@@ -120,14 +114,33 @@ public class ParkingLotTest {
     @Test
     void shouldNotifyOwnerForAvailableParkingLot()
             throws ParkingLotFullException, CarAlreadyParkedException, CarNotParkedException {
-        Owner ownerMock = Mockito.mock(Owner.class);
-        ParkingLot parkingLot = new ParkingLot(2, ownerMock);
+        Observer ownerMock = Mockito.mock(Observer.class);
+        ParkingLot parkingLot = new ParkingLot(2);
+
+        parkingLot.registerObserver(ownerMock);
+
         Car car2 = new Car();
         parkingLot.park(new Car());
         parkingLot.park(car2);
         parkingLot.unpark(car2);
 
         Mockito.verify(ownerMock, Mockito.times(1)).notifyAvailable();
+    }
+
+    @Test
+    void shouldNotifyOwnerAndTrafficCopForFullParkingLot() throws ParkingLotFullException, CarAlreadyParkedException {
+        Observer ownerMock = Mockito.mock(Observer.class);
+        Observer trafficCopMock = Mockito.mock(Observer.class);
+
+        ParkingLot parkingLot = new ParkingLot(2);
+        parkingLot.registerObserver(ownerMock);
+        parkingLot.registerObserver(trafficCopMock);
+
+        parkingLot.park(new Car());
+        parkingLot.park(new Car());
+
+        Mockito.verify(ownerMock, Mockito.times(1)).nofifyFull();
+        Mockito.verify(trafficCopMock, Mockito.times(1)).nofifyFull();
     }
 
 }
