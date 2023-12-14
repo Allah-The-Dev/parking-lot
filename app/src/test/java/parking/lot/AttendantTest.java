@@ -110,7 +110,6 @@ public class AttendantTest {
 
         ParkingLotSelector parkingLotSelector = new LeastCarsParkedSelector();
 
-
         Mockito.when(parkingLotMock.getParkedCarsCount()).thenReturn(2);
         Mockito.when(parkingLotMock2.getParkedCarsCount()).thenReturn(3);
         Mockito.when(parkingLotMock3.getParkedCarsCount()).thenReturn(1);
