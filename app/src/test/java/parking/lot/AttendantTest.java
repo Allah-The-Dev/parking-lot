@@ -1,6 +1,7 @@
 package parking.lot;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyList;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -10,8 +11,11 @@ public class AttendantTest {
     void attendantShouldBeAbleToParkCarInFirstAvailableParkingLot()
             throws ParkingLotFullException, CarAlreadyParkedException {
         ParkingLot parkingLotMock = Mockito.mock(ParkingLot.class);
+        ParkingLotSelector parkingLotSelectorMock = Mockito.mock(FirstFreeParkingLotSelctor.class);
 
-        Attendant attendant = new Attendant();
+        Mockito.when(parkingLotSelectorMock.select(anyList())).thenReturn(parkingLotMock);
+        
+        Attendant attendant = new Attendant(parkingLotSelectorMock);
         attendant.addParkingLot(parkingLotMock);
 
         Car carMock = Mockito.mock(Car.class);
@@ -24,8 +28,11 @@ public class AttendantTest {
     void attendantShouldNotBeAbleToParkCarInFirstParkingLotWithNoCapacity()
             throws ParkingLotFullException, CarAlreadyParkedException {
         ParkingLot parkingLotMock = Mockito.mock(ParkingLot.class);
+        ParkingLotSelector parkingLotSelectorMock = Mockito.mock(FirstFreeParkingLotSelctor.class);
 
-        Attendant attendant = new Attendant();
+        Mockito.when(parkingLotSelectorMock.select(anyList())).thenReturn(parkingLotMock);
+
+        Attendant attendant = new Attendant(parkingLotSelectorMock);
         attendant.addParkingLot(parkingLotMock);
 
         Car carMock = Mockito.mock(Car.class);
@@ -41,7 +48,11 @@ public class AttendantTest {
         ParkingLot parkingLotMock = Mockito.mock(ParkingLot.class);
         ParkingLot parkingLotMock2 = Mockito.mock(ParkingLot.class);
 
-        Attendant attendant = new Attendant();
+        ParkingLotSelector parkingLotSelectorMock = Mockito.mock(FirstFreeParkingLotSelctor.class);
+
+        Mockito.when(parkingLotSelectorMock.select(anyList())).thenReturn(parkingLotMock2);
+
+        Attendant attendant = new Attendant(parkingLotSelectorMock);
         attendant.addParkingLot(parkingLotMock);
         attendant.addParkingLot(parkingLotMock2);
 

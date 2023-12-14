@@ -5,9 +5,15 @@ import java.util.List;
 
 public class Attendant {
     private final List<ParkingLot> parkingLots;
+    private ParkingLotSelector parkingLotSelector;
 
     Attendant() {
         this.parkingLots = new ArrayList<>();
+    }
+
+    Attendant(ParkingLotSelector parkingLotSelector) {
+        this.parkingLots = new ArrayList<>();
+        this.parkingLotSelector = parkingLotSelector;
     }
 
     void addParkingLot(ParkingLot parkingLot) {
@@ -15,17 +21,16 @@ public class Attendant {
     }
 
     void park(Car car) throws ParkingLotFullException, CarAlreadyParkedException {
-        for (ParkingLot parkingLot : parkingLots) {
-            if (!parkingLot.isFull()) {
-                parkingLot.park(car);
-            }
+        ParkingLot parkingLot = this.parkingLotSelector.select(this.parkingLots);
+        if (!parkingLot.isFull()) {
+            parkingLot.park(car);
         }
     }
 
-    public void unpark(Car carMock) throws CarNotParkedException {
+    public void unpark(Car car) throws CarNotParkedException {
         for (ParkingLot parkingLot : parkingLots) {
-            if (parkingLot.isParked(carMock)) {
-                parkingLot.unpark(carMock);
+            if (parkingLot.isParked(car)) {
+                parkingLot.unpark(car);
             }
         }
     }
