@@ -10,6 +10,10 @@ public class ParkingLot {
     List<Observer> observers = new ArrayList<>();
     Set<Car> parkedCars = new HashSet<>();
 
+    public int getParkedCarsCount() {
+        return parkedCars.size();
+    }
+
     public ParkingLot(int capacity) {
         this.capacity = capacity;
     }

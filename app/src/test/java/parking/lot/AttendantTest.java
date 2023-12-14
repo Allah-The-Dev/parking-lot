@@ -14,7 +14,7 @@ public class AttendantTest {
         ParkingLotSelector parkingLotSelectorMock = Mockito.mock(FirstFreeParkingLotSelctor.class);
 
         Mockito.when(parkingLotSelectorMock.select(anyList())).thenReturn(parkingLotMock);
-        
+
         Attendant attendant = new Attendant(parkingLotSelectorMock);
         attendant.addParkingLot(parkingLotMock);
 
@@ -99,6 +99,33 @@ public class AttendantTest {
 
         attendant.unpark(carMock);
         Mockito.verify(parkingLotMock2, Mockito.times(1)).unpark(carMock);
+    }
+
+    @Test
+    void attendantShouldBeAbleToParkCarUsingLeastCarsParkedSelector()
+            throws ParkingLotFullException, CarAlreadyParkedException, CarNotParkedException {
+        ParkingLot parkingLotMock = Mockito.mock(ParkingLot.class);
+        ParkingLot parkingLotMock2 = Mockito.mock(ParkingLot.class);
+        ParkingLot parkingLotMock3 = Mockito.mock(ParkingLot.class);
+
+        ParkingLotSelector parkingLotSelector = new LeastCarsParkedSelector();
+
+
+        Mockito.when(parkingLotMock.getParkedCarsCount()).thenReturn(2);
+        Mockito.when(parkingLotMock2.getParkedCarsCount()).thenReturn(3);
+        Mockito.when(parkingLotMock3.getParkedCarsCount()).thenReturn(1);
+
+        Attendant attendant = new Attendant(parkingLotSelector);
+        attendant.addParkingLot(parkingLotMock);
+        attendant.addParkingLot(parkingLotMock2);
+        attendant.addParkingLot(parkingLotMock3);
+
+        Car carMock = Mockito.mock(Car.class);
+
+        Mockito.when(parkingLotMock3.isFull()).thenReturn(false);
+
+        attendant.park(carMock);
+        Mockito.verify(parkingLotMock3, Mockito.times(1)).park(carMock);
     }
 
 }
