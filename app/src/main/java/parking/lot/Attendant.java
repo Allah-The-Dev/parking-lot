@@ -21,4 +21,12 @@ public class Attendant {
             }
         }
     }
+
+    public void unpark(Car carMock) throws CarNotParkedException {
+        for (ParkingLot parkingLot : parkingLots) {
+            if (parkingLot.isParked(carMock)) {
+                parkingLot.unpark(carMock);
+            }
+        }
+    }
 }
