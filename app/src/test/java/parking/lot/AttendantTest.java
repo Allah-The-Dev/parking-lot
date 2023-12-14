@@ -151,4 +151,27 @@ public class AttendantTest {
         attendant.park(carMock);
         Mockito.verify(parkingLotMock3, Mockito.times(1)).park(carMock);
     }
+
+    @Test
+    void attendantShouldBeAbleToParkTheCarInCheapestLotAvailable() throws ParkingLotFullException, CarAlreadyParkedException {
+        ParkingLot parkingLotMocks = Mockito.mock(ParkingLot.class);
+        ParkingLot parkingLotMocks2 = Mockito.mock(ParkingLot.class);
+        ParkingLot parkingLotMocks3 = Mockito.mock(ParkingLot.class);
+
+        ParkingLotSelector parkingLotSelector = new CheapeastParkingLotSelector();
+
+        Mockito.when(parkingLotMocks.getPrice()).thenReturn(10);
+        Mockito.when(parkingLotMocks2.getPrice()).thenReturn(5);
+        Mockito.when(parkingLotMocks3.getPrice()).thenReturn(2);
+
+        Attendant attendant = new Attendant(parkingLotSelector);
+        attendant.addParkingLot(parkingLotMocks);
+        attendant.addParkingLot(parkingLotMocks2);
+        attendant.addParkingLot(parkingLotMocks3);
+
+        Car carMock = Mockito.mock(Car.class);
+        Mockito.when(parkingLotMocks3.isFull()).thenReturn(false);
+        attendant.park(carMock);
+        Mockito.verify(parkingLotMocks3,Mockito.times(1)).park(carMock);
+    }
 }

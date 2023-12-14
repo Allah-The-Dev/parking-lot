@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 public class ParkingLot {
-    final int capacity;
+    private int capacity;
+    private int price;
     List<Observer> observers = new ArrayList<>();
     Set<Car> parkedCars = new HashSet<>();
 
@@ -14,12 +15,17 @@ public class ParkingLot {
         this.capacity = capacity;
     }
 
-     public int getParkedCarsCount() {
+    public int getParkedCarsCount() {
         return parkedCars.size();
     }
 
     public int getCapacity() {
         return capacity;
+    }
+
+    public ParkingLot(int capacity, int price) {
+        this.capacity = capacity;
+        this.price = price;
     }
 
     void registerObserver(Observer observer) {
@@ -62,6 +68,10 @@ public class ParkingLot {
             return true;
         }
         return false;
+    }
+
+    public int getPrice() {
+        return this.price;
     }
 
 }
